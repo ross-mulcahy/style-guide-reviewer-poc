@@ -1,0 +1,12 @@
+{
+  "name": "style-guide-reviewer-poc",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "wp-scripts build src/editor.js src/editor.scss",
+    "start": "wp-scripts start src/editor.js src/editor.scss"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^27.9.0"
+  }
+}
