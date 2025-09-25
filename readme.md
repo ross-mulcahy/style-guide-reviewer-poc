@@ -33,6 +33,8 @@ A proof-of-concept WordPress plugin that allows editors to review post content a
 
 ## How to Run a Review
 
+<img src="https://github.com/user-attachments/assets/c435a7b8-fe77-4a1d-beae-d4bd589a2d7a" alt="Screenshot" width="600">
+
 1.  Open any post or page in the Gutenberg block editor.
 2.  You will see a new icon in the top toolbar (header). Clicking it will open the review sidebar.
 3.  Alternatively, you can open the sidebar by clicking the three-dots menu in the top-right corner and selecting "Style Guide Reviewer".
