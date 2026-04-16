@@ -1,0 +1,21 @@
+includes:
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+
+parameters:
+    level: 6
+    paths:
+        - style-guide-reviewer.php
+        - uninstall.php
+        - includes
+    excludePaths:
+        - build
+        - node_modules
+        - vendor
+        - tests
+    bootstrapFiles:
+        - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+    ignoreErrors:
+        # The AI Client / Abilities API live in WP 7.0 core and may not yet have stubs.
+        - '#Function wp_ai_client_prompt not found#'
+        - '#Function wp_register_ability not found#'
+        - '#Function wp_register_ability_category not found#'

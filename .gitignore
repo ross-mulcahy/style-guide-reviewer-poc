@@ -1,0 +1,24 @@
+/build/
+/node_modules/
+/vendor/
+/languages/*.mo
+
+# Build + release artifacts
+*.zip
+/site.zip
+
+# Tooling caches
+.phpunit.result.cache
+.phpcs-cache
+/.playwright/
+/test-results/
+/playwright-report/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.log
+
+# Claude Code local config
+/.claude/

@@ -1,12 +1,25 @@
 {
-  "name": "style-guide-reviewer-poc",
-  "version": "1.0.0",
+  "name": "style-guide-reviewer",
+  "version": "2.0.0",
+  "description": "Review post content against a brand style guide using the WordPress AI Client and Abilities API.",
+  "license": "GPL-2.0-or-later",
   "private": true,
   "scripts": {
     "build": "wp-scripts build src/editor.js src/editor.scss",
-    "start": "wp-scripts start src/editor.js src/editor.scss"
+    "start": "wp-scripts start src/editor.js src/editor.scss",
+    "format": "wp-scripts format",
+    "lint:js": "wp-scripts lint-js src",
+    "lint:php": "composer run phpcs",
+    "phpstan": "composer run phpstan",
+    "makepot": "wp i18n make-pot . languages/style-guide-reviewer.pot --slug=style-guide-reviewer --domain=style-guide-reviewer",
+    "playground": "npx --no-install @wp-playground/cli server --blueprint=tests/playground/blueprint.json --blueprint-may-read-adjacent-files --mount=$PWD:/plugin-src --mount=$PWD/tests/playground:/tests --port=9400",
+    "playground:dev": "npx --no-install @wp-playground/cli server --blueprint=tests/playground/dev-blueprint.json --blueprint-may-read-adjacent-files --mount=$PWD:/plugin-src --mount=$PWD/tests/playground:/tests --port=9400",
+    "playground:snapshot": "npx --no-install @wp-playground/cli build-snapshot --blueprint=tests/playground/blueprint.json --mount=$PWD:/plugin-src --mount=$PWD/tests/playground:/tests --outfile=site.zip",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
-    "@wordpress/scripts": "^27.9.0"
+    "@playwright/test": "^1.45.0",
+    "@wordpress/scripts": "^27.9.0",
+    "@wp-playground/cli": "^1.0.7"
   }
 }

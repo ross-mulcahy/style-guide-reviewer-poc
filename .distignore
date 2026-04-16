@@ -1,0 +1,27 @@
+# Source + tooling that must not ship to wp.org
+/.git
+/.github
+/.gitignore
+/.distignore
+/.editorconfig
+/.phpcs-cache
+/.phpunit.result.cache
+/.playwright
+/.vscode
+/.idea
+/node_modules
+/src
+/tests
+/vendor/bin
+/composer.json
+/composer.lock
+/package.json
+/package-lock.json
+/phpcs.xml.dist
+/phpstan.neon.dist
+/playwright.config.ts
+/CLAUDE.md
+/readme.md
+*.zip
+*.log
+.DS_Store

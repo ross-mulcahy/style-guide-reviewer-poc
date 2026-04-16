@@ -1,0 +1,37 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "Style Guide Reviewer — reviewer demo",
+		"description": "Boots WP with the plugin active, a sample post, a seeded style guide, and a stubbed AI provider. No real credentials required."
+	},
+	"preferredVersions": {
+		"php": "8.3",
+		"wp": "latest"
+	},
+	"features": {
+		"networking": true
+	},
+	"login": true,
+	"phpExtensionBundles": [ "kitchen-sink" ],
+	"steps": [
+		{
+			"step": "mkdir",
+			"path": "/wordpress/wp-content/mu-plugins"
+		},
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "vfs",
+				"path": "/plugin-src"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php @copy('/tests/mu-plugins/ai-client-stub.php', '/wordpress/wp-content/mu-plugins/sgr-ai-client-stub.php'); require_once '/tests/fixtures/seed.php';"
+		}
+	],
+	"landingPage": "/wp-admin/edit.php"
+}
