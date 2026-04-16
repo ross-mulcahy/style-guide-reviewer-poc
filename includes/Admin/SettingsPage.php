@@ -62,7 +62,6 @@ final class SettingsPage {
 				'sanitize_callback' => [ self::class, 'sanitize_guide' ],
 				'show_in_rest'      => false,
 				'default'           => '',
-				'autoload'          => false,
 			]
 		);
 
@@ -144,13 +143,10 @@ final class SettingsPage {
 			return;
 		}
 
-		// Run the file upload handler *before* do_settings_sections, so an
-		// uploaded file pre-populates $_POST ahead of options.php processing.
-		GuideUploader::maybe_handle_request();
-
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'Style Guide Reviewer', 'style-guide-reviewer' ); ?></h1>
+			<?php settings_errors( self::GUIDE_OPTION ); ?>
 			<form method="post" action="options.php" enctype="multipart/form-data">
 				<?php
 				settings_fields( self::PAGE_SLUG . '-group' );

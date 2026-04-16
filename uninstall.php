@@ -48,6 +48,13 @@ if ( is_multisite() ) {
 		delete_option( 'sgr_poc_guide_text' );
 		delete_option( 'sgr_poc_openai' );
 		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
+				$wpdb->esc_like( '_transient_sgr_rl_' ) . '%',
+				$wpdb->esc_like( '_transient_timeout_sgr_rl_' ) . '%'
+			)
+		);
+		$wpdb->query(
 			$wpdb->prepare( "DELETE FROM {$wpdb->postmeta} WHERE meta_key = %s", '_sgr_review_cache' )
 		);
 		restore_current_blog();

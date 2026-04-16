@@ -8,7 +8,8 @@ import apiFetch from '@wordpress/api-fetch';
 
 import './editor.scss';
 
-const ABILITY_ID = ( window.sgrEditor && window.sgrEditor.abilityId ) || 'sgr/review-post';
+const ABILITY_ID =
+	( window.sgrEditor && window.sgrEditor.abilityId ) || 'sgr/review-post';
 const SEVERITY_ORDER = [ 'critical', 'major', 'minor', 'suggestion' ];
 
 const SEVERITY_LABELS = {
@@ -30,9 +31,13 @@ const VERDICT_LABELS = {
  * We go through apiFetch directly rather than the @wordpress/abilities client
  * so we can read the X-Sgr-Cache response header in tests. The route shape
  * follows the Abilities API convention: POST to /wp-abilities/v1/abilities/{id}/run.
+ *
+ * @param {number} postId Post ID to review.
  */
 async function executeReviewAbility( postId ) {
-	const path = `/wp-abilities/v1/abilities/${ encodeURIComponent( ABILITY_ID ) }/run`;
+	const path = `/wp-abilities/v1/abilities/${ encodeURIComponent(
+		ABILITY_ID
+	) }/run`;
 	return apiFetch( {
 		path,
 		method: 'POST',
@@ -47,12 +52,17 @@ const StyleGuideReviewerPanel = () => {
 	const [ error, setError ] = useState( null );
 
 	const { postId } = useSelect(
-		( select ) => ( { postId: select( 'core/editor' ).getCurrentPostId() } ),
+		( select ) => ( {
+			postId: select( 'core/editor' ).getCurrentPostId(),
+		} ),
 		[]
 	);
 
-	const aiAvailable = Boolean( window.sgrEditor && window.sgrEditor.aiAvailable );
-	const settingsUrl = ( window.sgrEditor && window.sgrEditor.settingsUrl ) || '';
+	const aiAvailable = Boolean(
+		window.sgrEditor && window.sgrEditor.aiAvailable
+	);
+	const settingsUrl =
+		( window.sgrEditor && window.sgrEditor.settingsUrl ) || '';
 
 	const runReview = useCallback( async () => {
 		setIsLoading( true );
@@ -65,7 +75,10 @@ const StyleGuideReviewerPanel = () => {
 		} catch ( err ) {
 			setError(
 				( err && err.message ) ||
-					__( 'An unexpected error occurred running the review.', 'style-guide-reviewer' )
+					__(
+						'An unexpected error occurred running the review.',
+						'style-guide-reviewer'
+					)
 			);
 		} finally {
 			setIsLoading( false );
@@ -75,12 +88,12 @@ const StyleGuideReviewerPanel = () => {
 	const grouped =
 		results && Array.isArray( results.issues )
 			? results.issues.reduce( ( acc, issue ) => {
-				const severity = SEVERITY_ORDER.includes( issue.severity )
-					? issue.severity
-					: 'suggestion';
-				( acc[ severity ] = acc[ severity ] || [] ).push( issue );
-				return acc;
-			}, {} )
+					const severity = SEVERITY_ORDER.includes( issue.severity )
+						? issue.severity
+						: 'suggestion';
+					( acc[ severity ] = acc[ severity ] || [] ).push( issue );
+					return acc;
+			  }, {} )
 			: null;
 
 	return (
@@ -95,7 +108,10 @@ const StyleGuideReviewerPanel = () => {
 						<>
 							{ ' ' }
 							<ExternalLink href={ settingsUrl }>
-								{ __( 'Open settings', 'style-guide-reviewer' ) }
+								{ __(
+									'Open settings',
+									'style-guide-reviewer'
+								) }
 							</ExternalLink>
 						</>
 					) }
@@ -124,7 +140,9 @@ const StyleGuideReviewerPanel = () => {
 
 			{ results && (
 				<div className="sgr-results">
-					<div className={ `sgr-verdict sgr-verdict--${ results.verdict }` }>
+					<div
+						className={ `sgr-verdict sgr-verdict--${ results.verdict }` }
+					>
 						{ sprintf(
 							/* translators: %s: verdict label. */
 							__( 'Verdict: %s', 'style-guide-reviewer' ),
@@ -141,11 +159,15 @@ const StyleGuideReviewerPanel = () => {
 						</Notice>
 					) }
 
-					{ Array.isArray( results.issues ) && results.issues.length === 0 && (
-						<p className="sgr-empty">
-							{ __( 'No issues found. Great job!', 'style-guide-reviewer' ) }
-						</p>
-					) }
+					{ Array.isArray( results.issues ) &&
+						results.issues.length === 0 && (
+							<p className="sgr-empty">
+								{ __(
+									'No issues found. Great job!',
+									'style-guide-reviewer'
+								) }
+							</p>
+						) }
 
 					{ grouped &&
 						SEVERITY_ORDER.map(
@@ -156,30 +178,47 @@ const StyleGuideReviewerPanel = () => {
 										className={ `sgr-issue-group sgr-issue-group--${ severity }` }
 									>
 										<h3 className="sgr-issue-group__title">
-											{ SEVERITY_LABELS[ severity ] } ({ grouped[ severity ].length })
+											{ SEVERITY_LABELS[ severity ] } (
+											{ grouped[ severity ].length })
 										</h3>
 										<ul>
-											{ grouped[ severity ].map( ( issue, index ) => (
-												<li key={ `${ severity }-${ index }` } className="sgr-issue">
-													<strong className="sgr-issue__rule-id">
-														{ issue.ruleId }
-													</strong>
-													<p className="sgr-issue__message">{ issue.message }</p>
-													{ issue.offendingText && (
-														<blockquote className="sgr-issue__offending-text">
-															{ issue.offendingText }
-														</blockquote>
-													) }
-													{ issue.suggestion && (
-														<div className="sgr-issue__suggestion">
-															<strong>
-																{ __( 'Suggestion:', 'style-guide-reviewer' ) }
-															</strong>{ ' ' }
-															<span>{ issue.suggestion }</span>
-														</div>
-													) }
-												</li>
-											) ) }
+											{ grouped[ severity ].map(
+												( issue, index ) => (
+													<li
+														key={ `${ severity }-${ index }` }
+														className="sgr-issue"
+													>
+														<strong className="sgr-issue__rule-id">
+															{ issue.ruleId }
+														</strong>
+														<p className="sgr-issue__message">
+															{ issue.message }
+														</p>
+														{ issue.offendingText && (
+															<blockquote className="sgr-issue__offending-text">
+																{
+																	issue.offendingText
+																}
+															</blockquote>
+														) }
+														{ issue.suggestion && (
+															<div className="sgr-issue__suggestion">
+																<strong>
+																	{ __(
+																		'Suggestion:',
+																		'style-guide-reviewer'
+																	) }
+																</strong>{ ' ' }
+																<span>
+																	{
+																		issue.suggestion
+																	}
+																</span>
+															</div>
+														) }
+													</li>
+												)
+											) }
 										</ul>
 									</div>
 								)

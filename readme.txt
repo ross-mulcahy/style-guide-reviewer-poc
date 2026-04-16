@@ -1,5 +1,5 @@
 === Style Guide Reviewer ===
-Contributors: yourwporgusername
+Contributors: mulcahyross
 Tags: ai, editorial, content, gutenberg, style-guide
 Requires at least: 7.0
 Tested up to: 7.0
@@ -75,12 +75,12 @@ Yes. Options and caches are cleaned up per-site when the plugin is uninstalled n
 * Added safe content trimming at sentence boundaries.
 * Hardened file upload handler (capability + nonce before touching `$_FILES`, `wp_check_filetype_and_ext`, WP_Filesystem, 1 MB cap).
 * Full wp.org submission polish: namespaced classes, uninstall handler, text-domain loader, JS translations, multisite-aware cleanup.
-* Automatic migration from 1.x (POC): copies `sgr_poc_guide_text` to the new option and deletes the old API-key option.
+* Automatic migration from the legacy 1.x release: carries forward the saved guide and removes the old API-key option.
 
 = 1.0.0 =
-* Initial POC release (OpenAI Responses API, direct key storage).
+* Initial release with direct OpenAI integration and plugin-managed key storage.
 
 == Upgrade Notice ==
 
 = 2.0.0 =
-This release removes the plugin-managed OpenAI API key. Install a WordPress AI Client connector for your preferred provider before updating; the plugin will delete the old `sgr_poc_openai` option automatically.
+This release removes the plugin-managed OpenAI API key. Install a WordPress AI Client connector for your preferred provider before updating; the plugin will automatically clean up the old stored API-key option.

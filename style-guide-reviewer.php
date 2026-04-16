@@ -1,14 +1,13 @@
 <?php
 /**
  * Plugin Name:       Style Guide Reviewer
- * Plugin URI:        https://github.com/example/style-guide-reviewer
+ * Plugin URI:        https://github.com/ross-mulcahy/style-guide-reviewer
  * Description:       Review post content against a brand style guide using the WordPress AI Client and Abilities API.
  * Version:           2.0.0
  * Requires at least: 7.0
  * Requires PHP:      7.4
  * Author:            Style Guide Reviewer Contributors
- * Author URI:        https://github.com/example/style-guide-reviewer
- * Update URI:        false
+ * Author URI:        https://github.com/ross-mulcahy/style-guide-reviewer
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       style-guide-reviewer

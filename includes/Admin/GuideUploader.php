@@ -22,11 +22,11 @@ final class GuideUploader {
 	public const FIELD_NAME   = 'sgr_guide_file';
 
 	/**
-	 * No-op for symmetry with other register() methods. Upload handling runs
-	 * inline during settings-page rendering, not through an action hook.
+	 * Register the upload handoff on admin requests so it runs during the
+	 * actual `options.php` POST lifecycle.
 	 */
 	public static function register(): void {
-		// Intentionally empty.
+		add_action( 'admin_init', [ self::class, 'maybe_handle_request' ], 5 );
 	}
 
 	/**
@@ -34,10 +34,23 @@ final class GuideUploader {
 	 * subsequent options.php handler persists its contents.
 	 */
 	public static function maybe_handle_request(): void {
+		if ( 'POST' !== strtoupper( (string) ( $_SERVER['REQUEST_METHOD'] ?? '' ) ) ) {
+			return;
+		}
+
+		$option_page = isset( $_POST['option_page'] )
+			? sanitize_key( wp_unslash( (string) $_POST['option_page'] ) )
+			: '';
+		if ( SettingsPage::PAGE_SLUG . '-group' !== $option_page ) {
+			return;
+		}
+
 		// 1) Capability check before touching $_FILES.
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
+
+		check_admin_referer( SettingsPage::PAGE_SLUG . '-group-options' );
 
 		// 2) Must be a POST to the options.php form *with* a chosen file.
 		if ( empty( $_FILES[ self::FIELD_NAME ] ) || ! is_array( $_FILES[ self::FIELD_NAME ] ) ) {

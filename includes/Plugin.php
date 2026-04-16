@@ -70,6 +70,8 @@ final class Plugin {
 	 * page loads. Idempotent: compares stored version to the current constant.
 	 */
 	public static function maybe_upgrade(): void {
+		self::ensure_options();
+
 		$installed = get_option( self::VERSION_OPTION, '' );
 		if ( SGR_VERSION === $installed ) {
 			return;
@@ -81,6 +83,15 @@ final class Plugin {
 		}
 
 		update_option( self::VERSION_OPTION, SGR_VERSION, false );
+	}
+
+	/**
+	 * Pre-create plugin options with explicit non-autoload storage.
+	 */
+	private static function ensure_options(): void {
+		if ( false === get_option( SettingsPage::GUIDE_OPTION, false ) ) {
+			add_option( SettingsPage::GUIDE_OPTION, '', '', false );
+		}
 	}
 
 	/**
@@ -105,6 +116,18 @@ final class Plugin {
 	 * Register and enqueue editor assets, gated on AI availability.
 	 */
 	public static function enqueue_editor_assets(): void {
+		if ( function_exists( 'get_current_screen' ) ) {
+			$screen = get_current_screen();
+			if (
+				! $screen ||
+				! method_exists( $screen, 'is_block_editor' ) ||
+				! $screen->is_block_editor() ||
+				'post' !== $screen->base
+			) {
+				return;
+			}
+		}
+
 		$asset_file = SGR_PATH . 'build/editor.asset.php';
 		if ( ! is_readable( $asset_file ) ) {
 			return;

@@ -189,13 +189,22 @@ final class ReviewRunner {
 	 * the system role in the prompt text.
 	 */
 	private static function build_prompt( string $guide, string $content ): string {
-		return "You are a strict style-guide linter. Find violations of the provided GUIDE within the CONTENT."
+		$prompt = "You are a strict style-guide linter. Find violations of the provided GUIDE within the CONTENT."
 			. "\n- Analyse ONLY the CONTENT. Do not report rules that are not violated."
 			. "\n- For each issue, populate offendingText with the exact substring from CONTENT that violates the rule."
 			. "\n- If no violations are found, return an empty issues array and verdict=pass."
 			. "\n- Respond with JSON that strictly matches the provided schema. No prose, no markdown."
 			. "\n\nGUIDE:\n" . $guide
 			. "\n\nCONTENT:\n" . $content;
+
+		/**
+		 * Filters the final prompt sent to the AI provider.
+		 *
+		 * @param string $prompt  Full prompt text.
+		 * @param string $guide   Sanitized style-guide text.
+		 * @param string $content Normalized post content.
+		 */
+		return (string) apply_filters( 'sgr_review_prompt', $prompt, $guide, $content );
 	}
 
 	/**
